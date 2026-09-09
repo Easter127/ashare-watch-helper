@@ -1,0 +1,104 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  release:
+    types: [ published ]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.10', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Linux Qt deps
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxcb-xinerama0 libgl1-mesa-glx libxkbcommon-x11-0
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Smoke test (import + offscreen launch)
+      env:
+        QT_QPA_PLATFORM: offscreen
+      run: |
+        python -c "
+        import sys, os
+        sys.path.insert(0, 'src')
+        from stock_desktop import (
+            StockConfig, DEFAULT_HOTKEY, DEFAULT_STOCKS, DEFAULT_COLORS, _app_dir
+        )
+        assert DEFAULT_HOTKEY == '<alt>+e', f'default hotkey wrong: {DEFAULT_HOTKEY}'
+        assert DEFAULT_STOCKS[0]['code'] == '600519', f'default stock wrong: {DEFAULT_STOCKS}'
+        assert 'dark' in DEFAULT_COLORS and 'light' in DEFAULT_COLORS
+        print('smoke test passed')
+        "
+
+    - name: Headless GUI launch
+      env:
+        QT_QPA_PLATFORM: offscreen
+      run: |
+        python -c "
+        import os, sys, tempfile
+        os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+        sys.path.insert(0, 'src')
+        from PyQt5.QtWidgets import QApplication
+        from PyQt5.QtCore import QTimer
+        app = QApplication(sys.argv)
+        # 隔离 config
+        import stock_desktop as sd
+        cfg_file = os.path.join(tempfile.mkdtemp(), 'config.json')
+        sd.CONFIG_FILE = cfg_file
+        from stock_desktop import StockDesktopApp
+        w = StockDesktopApp()
+        w.show()
+        QTimer.singleShot(500, app.quit)
+        sys.exit(app.exec_())
+        "
+
+  build-exe:
+    name: Build Windows exe
+    runs-on: windows-latest
+    needs: test
+    if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Build exe
+      run: python build_exe.py
+
+    - name: Upload exe to release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/ashare-watch-helper.exe
