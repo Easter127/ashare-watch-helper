@@ -4,7 +4,7 @@
 
 **桌面悬浮的极简 A 股盯盘小工具 / A lightweight floating A-share stock ticker**
 
-[![GitHub release](https://img.shields.io/github/v/release/yourname/ashare-watch-helper?style=flat-square)](https://github.com/yourname/ashare-watch-helper/releases)
+[![GitHub release](https://img.shields.io/github/v/release/Easter127/ashare-watch-helper?style=flat-square)](https://github.com/Easter127/ashare-watch-helper/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](#-系统要求)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
@@ -52,7 +52,7 @@
 
 | 平台 | 文件 | 大小 |
 | :--- | :--- | :---: |
-| 🪟 Windows (x64) | [**ashare-watch-helper.exe**](https://github.com/yourname/ashare-watch-helper/releases/latest/download/ashare-watch-helper.exe) | ~42 MB |
+| 🪟 Windows (x64) | [**ashare-watch-helper.exe**](https://github.com/Easter127/ashare-watch-helper/releases/latest/download/ashare-watch-helper.exe) | ~42 MB |
 | 🐧 Linux / 🍎 macOS | 需要自行 `pip install` + 运行 `.py` | — |
 
 > 📌 点击文件名称即可下载。下载后**双击运行**，首次启动会在 exe 旁边生成 `monitor_config.json`。
@@ -71,7 +71,7 @@
 ### 方式二：从源码运行
 
 ```bash
-git clone https://github.com/yourname/ashare-watch-helper.git
+git clone https://github.com/Easter127/ashare-watch-helper.git
 cd ashare-watch-helper
 pip install -r requirements.txt
 python src/stock_desktop.py
@@ -166,7 +166,7 @@ A: PyInstaller 打包偶尔被启发式扫描误报，是已知问题。添加�
 
 | Platform | File | Size |
 | :--- | :--- | :---: |
-| 🪟 Windows (x64) | [**ashare-watch-helper.exe**](https://github.com/yourname/ashare-watch-helper/releases/latest/download/ashare-watch-helper.exe) | ~42 MB |
+| 🪟 Windows (x64) | [**ashare-watch-helper.exe**](https://github.com/Easter127/ashare-watch-helper/releases/latest/download/ashare-watch-helper.exe) | ~42 MB |
 | 🐧 Linux / 🍎 macOS | Run from source: `pip install` + `python src/stock_desktop.py` | — |
 
 > 📌 Click the filename to download. After downloading, **double-click to run**. On first launch, `monitor_config.json` will be created next to the exe.
@@ -183,7 +183,7 @@ A: PyInstaller 打包偶尔被启发式扫描误报，是已知问题。添加�
 ### Option 2: From source
 
 ```bash
-git clone https://github.com/yourname/ashare-watch-helper.git
+git clone https://github.com/Easter127/ashare-watch-helper.git
 cd ashare-watch-helper
 pip install -r requirements.txt
 python src/stock_desktop.py
@@ -252,6 +252,6 @@ PRs welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <div align="center">
 
-**[⭐ Star this repo](https://github.com/yourname/ashare-watch-helper)** if you find it useful!
+**[⭐ Star this repo](https://github.com/Easter127/ashare-watch-helper)** if you find it useful!
 
 </div>
